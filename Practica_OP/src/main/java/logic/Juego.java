@@ -1,6 +1,5 @@
 package logic;
 
-import javax.xml.catalog.Catalog;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -82,7 +81,7 @@ public class Juego {
 
     private ArrayList<Carta> cartasBot;
 
-    private estadoPartida estado;
+    public static estadoPartida estado;
 
     public Juego(Strat level,boolean ciuegaPequeña){
         barajaBarajada=(ArrayList<Carta>) baraja.clone();
@@ -97,7 +96,7 @@ public class Juego {
 
     }
 
-    public void starGame(){
+    public void startGame(){
 
         jugador.dealNLHECards(barajaBarajada.get(0),barajaBarajada.get(1));
         barajaBarajada.remove(0); barajaBarajada.remove(1);
@@ -169,7 +168,7 @@ public class Juego {
                 barajaBarajada=(ArrayList<Carta>) baraja.clone();
                 Collections.shuffle(barajaBarajada);
                 //llamar sumar bote al stack del ganador
-                starGame();
+                startGame();
                 break;
 
         }
@@ -252,6 +251,6 @@ public class Juego {
 //        }
 //    }
 
-
+    
 
 }
