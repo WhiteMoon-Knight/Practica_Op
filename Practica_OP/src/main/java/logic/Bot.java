@@ -177,11 +177,17 @@ public class Bot {
         }
         else if (cards.get(0).getPalo().equals(cards.get(1).getPalo())){
             //llamar a la practica2 el primer apartado.(con el suited)
-            aux=cards.get(0).getRepresentacion()+cards.get(1).getRepresentacion()+"s";
+            if(cards.get(0).getValor()>cards.get(1).getValor())
+                 aux=cards.get(0).getRepresentacion()+cards.get(1).getRepresentacion()+"s";
+            else
+                aux=cards.get(1).getRepresentacion()+cards.get(0).getRepresentacion()+"s";
         }
         else {
-            aux = cards.get(0).getRepresentacion() + cards.get(1).getRepresentacion()+"o";
             //llamar a la practica2 el primer apartado.(con el offsuited)
+            if(cards.get(0).getValor()>cards.get(1).getValor())
+                aux=cards.get(0).getRepresentacion()+cards.get(1).getRepresentacion()+"o";
+            else
+                aux=cards.get(1).getRepresentacion()+cards.get(0).getRepresentacion()+"o";
         }
         // return arraysDeRangos.contains(RangoCreado)
 
