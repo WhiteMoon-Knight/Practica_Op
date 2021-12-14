@@ -3,6 +3,7 @@ package logic;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import poker.practica_op.hja.GUI.MainFrame;
 
 public class Juego {
 
@@ -82,6 +83,14 @@ public class Juego {
     private ArrayList<Carta> cartasBot;
 
     public static estadoPartida estado;
+    
+    public Bot getBot(){
+        return bot;
+    }
+    
+    public Player getPlayer(){
+        return jugador;
+    }
 
     public ArrayList<Carta> getBoard() {
         return board;
@@ -140,6 +149,9 @@ public class Juego {
     }
 
     public Juego(Strat level, boolean ciuegaPequeña){
+        cartasJugador =new ArrayList<>();
+        cartasBot = new ArrayList<>();
+        
         barajaBarajada=(ArrayList<Carta>) baraja.clone();
         Collections.shuffle(barajaBarajada);
         this.bote=0;
@@ -163,11 +175,11 @@ public class Juego {
 
         if(bot.CiegaPequeña()){
             apuestaBot=0.5;
-            if(bot.tieneFichas(apuestaBot))
-                bot.setFichas(bot.getFichas()-apuestaBot);
+//            if(bot.tieneFichas(apuestaBot))
+//                bot.setFichas(bot.getFichas()-apuestaBot);
             apuestaPlayer=1;
-            if(jugador.tieneFichas(apuestaPlayer))
-                 jugador.setFichas(jugador.getFichas()-apuestaPlayer);
+//            if(jugador.tieneFichas(apuestaPlayer))
+//                 jugador.setFichas(jugador.getFichas()-apuestaPlayer);
 
 
 
@@ -259,10 +271,12 @@ public class Juego {
         }
 
         if(botAction==apuestaPlayer){
+            MainFrame.Logger.setText("Bot calls");
             apuestaBot=botAction;
             avanzaEstado();
         }
         else if (botAction > apuestaPlayer){
+            MainFrame.Logger.setText("Bot raises");
             apuestaBot=botAction;
         }
 

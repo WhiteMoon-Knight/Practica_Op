@@ -61,7 +61,7 @@ public class Player {
     public Player(int fichas){
 
         s_cards = new ArrayList<>();
-        //cards = cards;
+        cards = new ArrayList<>();
         manos = new ArrayList<>();
         this.fichas =fichas;
         state = State.NOT_PLAYING;

@@ -372,14 +372,16 @@ public class MainFrame extends javax.swing.JFrame {
                             .addComponent(BotPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addGroup(GamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(GamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(Bot_stack, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
-                        .addComponent(Human_Stack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(ActionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Bot_stack, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(GamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(Human_Stack, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(ActionPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(24, 24, 24))
         );
 
         MainPanel.add(GamePanel, "card2");
+
+        StartPanel.setFont(new java.awt.Font("Dialog", 0, 36)); // NOI18N
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3), "Bot Configuration", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 14))); // NOI18N
 
@@ -393,6 +395,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
+        Agressive_button.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         Agressive_button.setSelected(true);
         Agressive_button.setText("Agressive");
         Agressive_button.addActionListener(new java.awt.event.ActionListener() {
@@ -402,12 +405,15 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jPanel1.add(Agressive_button);
 
+        Tight_button.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         Tight_button.setText("Tight");
         jPanel1.add(Tight_button);
 
+        Balanced_button.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         Balanced_button.setText("Balanced");
         jPanel1.add(Balanced_button);
 
+        Cheater_Button.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         Cheater_Button.setText("Cheater");
         jPanel1.add(Cheater_Button);
 
@@ -580,7 +586,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel GamePanel;
     private javax.swing.JLabel Human_Stack;
     private javax.swing.JLabel Human_bet;
-    private javax.swing.JLabel Logger;
+    public static javax.swing.JLabel Logger;
     private javax.swing.JPanel MainPanel;
     private static javax.swing.JLabel P_card1;
     private static javax.swing.JLabel P_card2;
@@ -627,8 +633,21 @@ public class MainFrame extends javax.swing.JFrame {
             case START:
                 game.startGame();
                 
-                Bot_bet.setText(game);
+                Human_Stack.setText(Double.toString(game.getPlayer().getFichas()));
+                Bot_stack.setText(Double.toString(game.getBot().getFichas()));
                 
+                Bot_bet.setText(Double.toString(game.getApuestaBot()));
+                Human_bet.setText(Double.toString(game.getApuestaPlayer()));
+                
+                P_card1.setText(game.getCartasJugador().get(0).toString());
+                P_card2.setText(game.getCartasJugador().get(1).toString());
+                /*
+                Bot_card1.setText("░");
+                Bot_card2.setText("░");*/
+                Bot_card1.setText(game.getCartasBot().get(0).toString());
+                Bot_card2.setText(game.getCartasBot().get(1).toString());
+                
+                game.raiseJugador(1);
                 break;
                 
         }

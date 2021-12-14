@@ -60,7 +60,22 @@ public class Carta implements Comparable<Object> {
 
     @Override
     public String toString() {
-        return representacion + palo;
+        String guay = "";
+        switch (palo){
+            case "h":
+                guay = "♥";
+                break;
+            case "d":
+                guay= "♦";
+                break;
+            case "c":
+                guay = "♣";
+                break;
+            case "s":
+                guay = "♠";
+                break;
+        }
+        return representacion + guay;
     }
 
     @Override

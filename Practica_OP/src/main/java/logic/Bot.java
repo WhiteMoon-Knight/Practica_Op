@@ -82,7 +82,7 @@ public class Bot {
 
     public Bot(int fichas,Strat level,boolean ciegaPequeña){
 
-        s_cards = new ArrayList<>();
+        cards = new ArrayList<>();
         this.level=level;
         manos = new ArrayList<>();
         this.fichas =fichas;
@@ -202,54 +202,58 @@ public class Bot {
 
     public double preflopAgressive(double bet){
         double porcentaje = rangoPassive.size()*0.8;
-        boolean encontrado =false;
+        boolean encontrado = false;
         int i=0;
-
-        while (i<porcentaje && !encontrado){
+        
+        if (rango()){
+            while (i<porcentaje && !encontrado){
 
             if(rango.equals(rangoPassive.get(i)))
                 encontrado=true;
 
             i++;
-        }
+            }
 
-        if(ciegaPequeña){
+            if(ciegaPequeña){
 
-            if(encontrado) {
-                if(this.fichas>2.5)
-                    return 2.5;
-                else
-                    return this.fichas;
+                if(encontrado) {
+                    if(this.fichas>2.5)
+                        return 2.5;
+                    else
+                        return this.fichas;
+                }
+                else{
+                    if(this.fichas>0.5)
+                        return 0.5;
+                    else
+                        return this.fichas;
+                }
+
+
+
             }
             else{
-                if(this.fichas>0.5)
-                    return 0.5;
+
+                if(encontrado){
+
+                    if(this.fichas>2*bet)
+                        return 2*bet;
+                    else
+                        return this.fichas;
+
+                }
+                else if (bet==0.5)
+                    return 0;
                 else
-                    return this.fichas;
-            }
+                    return -1;
 
-
-
-        }
-        else{
-
-            if(encontrado){
-
-                if(this.fichas>2*bet)
-                    return 2*bet;
-                else
-                    return this.fichas;
 
             }
-            else if (bet==0.5)
-                return 0;
-            else
-                return -1;
-
-
+        }else{
+            return -1;
         }
-
-    }
+        
+}
 
     public double postFlopAgressive(double bet, double pot, Juego.estadoPartida state){
         if(ciegaPequeña){
