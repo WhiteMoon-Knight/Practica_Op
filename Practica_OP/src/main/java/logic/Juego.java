@@ -83,7 +83,63 @@ public class Juego {
 
     public static estadoPartida estado;
 
-    public Juego(Strat level,boolean ciuegaPequeña){
+    public ArrayList<Carta> getBoard() {
+        return board;
+    }
+
+    public void setBoard(ArrayList<Carta> board) {
+        this.board = board;
+    }
+
+    public double getBote() {
+        return bote;
+    }
+
+    public void setBote(double bote) {
+        this.bote = bote;
+    }
+
+    public double getApuestaBot() {
+        return apuestaBot;
+    }
+
+    public void setApuestaBot(double apuestaBot) {
+        this.apuestaBot = apuestaBot;
+    }
+
+    public double getApuestaPlayer() {
+        return apuestaPlayer;
+    }
+
+    public void setApuestaPlayer(double apuestaPlayer) {
+        this.apuestaPlayer = apuestaPlayer;
+    }
+
+    public ArrayList<Carta> getCartasJugador() {
+        return cartasJugador;
+    }
+
+    public void setCartasJugador(ArrayList<Carta> cartasJugador) {
+        this.cartasJugador = cartasJugador;
+    }
+
+    public ArrayList<Carta> getCartasBot() {
+        return cartasBot;
+    }
+
+    public void setCartasBot(ArrayList<Carta> cartasBot) {
+        this.cartasBot = cartasBot;
+    }
+
+    public static estadoPartida getEstado() {
+        return estado;
+    }
+
+    public static void setEstado(estadoPartida estado) {
+        Juego.estado = estado;
+    }
+
+    public Juego(Strat level, boolean ciuegaPequeña){
         barajaBarajada=(ArrayList<Carta>) baraja.clone();
         Collections.shuffle(barajaBarajada);
         this.bote=0;
@@ -99,8 +155,10 @@ public class Juego {
     public void startGame(){
 
         jugador.dealNLHECards(barajaBarajada.get(0),barajaBarajada.get(1));
+        cartasJugador.add(barajaBarajada.get(0));cartasJugador.add(barajaBarajada.get(1));
         barajaBarajada.remove(0); barajaBarajada.remove(1);
         bot.dealNLHECards(barajaBarajada.get(0),barajaBarajada.get(1));
+        cartasBot.add(barajaBarajada.get(0));cartasBot.add(barajaBarajada.get(1));
         barajaBarajada.remove(0); barajaBarajada.remove(1);
 
         if(bot.CiegaPequeña()){
