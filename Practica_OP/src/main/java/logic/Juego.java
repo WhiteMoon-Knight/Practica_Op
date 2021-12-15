@@ -7,7 +7,9 @@ import poker.practica_op.hja.GUI.MainFrame;
 
 public class Juego {
 
-    public enum estadoPartida {START,PREFLOP,FLOP,TURN,RIVER};
+    public enum estadoPartida {INFO,PREFLOP,FLOP,TURN,RIVER};
+
+    public enum Actions{RAISE,CALL,CHECK,FOLD};
 
     private Player jugador;
 
@@ -155,7 +157,7 @@ public class Juego {
         barajaBarajada=(ArrayList<Carta>) baraja.clone();
         Collections.shuffle(barajaBarajada);
         this.bote=0;
-        estado=estadoPartida.START;
+        estado=estadoPartida.INFO;
 
         //ciegaPequeña true para el bot -> False para el player
         bot=new Bot(100,level,ciuegaPequeña);
@@ -250,6 +252,43 @@ public class Juego {
         return jugador.tieneFichas(apuesta);
     }
 
+    public Juego.Actions action(boolean turno,double bet){
+        //turno=true -> turno del bot
+
+      if(turno){
+          if(bet > apuestaPlayer)
+              return Actions.RAISE;
+
+          else if (bet==apuestaPlayer)
+              return Actions.CALL;
+
+          else if (bet==0)
+              return Actions.CHECK;
+
+          else
+              return Actions.FOLD;
+
+      }
+      else{
+          if(bet > apuestaBot)
+              return Actions.RAISE;
+
+          else if(bet == apuestaBot)
+              return Actions.CALL;
+
+          else if(bet == 0)
+              return Actions.CHECK;
+
+          else
+              return Actions.FOLD;
+
+
+      }
+
+
+    }
+
+
     public void callJugador(){
 
         apuestaPlayer = apuestaBot;
@@ -267,7 +306,7 @@ public class Juego {
 
         }
         else{
-           botAction = bot.postFlopAgressive(raise,bote,estado);
+           botAction = bot.postFlopAggressive(raise,bote,estado);
         }
 
         if(botAction==apuestaPlayer){
@@ -282,6 +321,7 @@ public class Juego {
 
         else{
             ///llamar metodo checkWinner (el bot foldea)
+            checkWinner();
         }
 
     }
