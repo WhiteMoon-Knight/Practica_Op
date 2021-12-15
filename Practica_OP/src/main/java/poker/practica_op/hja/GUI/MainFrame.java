@@ -6,6 +6,8 @@ package poker.practica_op.hja.GUI;
 
 import java.awt.CardLayout;
 import logic.Juego;
+import logic.Juego.Actions;
+import static logic.Juego.estado;
 import logic.Strat;
 
 /**
@@ -313,8 +315,18 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         Call_button.setText("Call");
+        Call_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Call_buttonActionPerformed(evt);
+            }
+        });
 
         Fold_button.setText("Fold");
+        Fold_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Fold_buttonActionPerformed(evt);
+            }
+        });
 
         BetText.setText("jTextField1");
 
@@ -561,6 +573,16 @@ public class MainFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_Bet_sliderStateChanged
 
+    private void Call_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Call_buttonActionPerformed
+        // TODO add your handling code here:
+        callButtonListener();
+    }//GEN-LAST:event_Call_buttonActionPerformed
+
+    private void Fold_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Fold_buttonActionPerformed
+        // TODO add your handling code here:
+        foldButtonListener();
+    }//GEN-LAST:event_Fold_buttonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -661,65 +683,97 @@ public class MainFrame extends javax.swing.JFrame {
     
     private void OKActionListener(){
         
-        switch(turno){
-            case BOT:
-                CardLayout card2 = (CardLayout)ActionPanel.getLayout();
-                card2.show(ActionPanel, "card2");
-                
-                if(Juego.estado == Juego.estadoPartida.START){
-                    game.startGame();
-                }
-                
-                Pot_label.setText(Double.toString(game.getApuestaBot() + game.getApuestaPlayer()));
-                
-                if(true){
-                    game.raiseJugador(1);
-                    game.setApuestaPlayer(0);
-                }
-                
-                Human_Stack.setText(Double.toString(game.getPlayer().getFichas()));
-                Bot_stack.setText(Double.toString(game.getBot().getFichas()));
-                
-                Bot_bet.setText(Double.toString(game.getApuestaBot()));
-                Human_bet.setText(Double.toString(game.getApuestaPlayer()));
-                
-                
-                P_card1.setText(game.getCartasJugador().get(0).toString());
-                P_card2.setText(game.getCartasJugador().get(1).toString());
-                /*
-                Bot_card1.setText("░");
-                Bot_card2.setText("░");
-                */
-                Bot_card1.setText(game.getCartasBot().get(0).toString());
-                Bot_card2.setText(game.getCartasBot().get(1).toString());
-                
-                turno = Turno.HUMANO;
-                break;
-            case HUMANO:
-                //check estado
-                
-                card2 = (CardLayout)ActionPanel.getLayout();
-                card2.show(ActionPanel, "card1");
-                
-                Bet_slider.setMaximum((int)game.getBot().getFichas());
-                Bet_slider.setMinimum((int)game.getApuestaBot());
-                
-                turno = Turno.BOT;
-                break;
-        }   
+        siguienteEstado();
+        if(turno == Turno.BOT){
+            
+            double actionBot;
+            if(game.estado == Juego.estadoPartida.PREFLOP){
+                actionBot = game.getBot().preflopAgressive(0);
+            }else{
+                actionBot = game.getBot().postFlopAgressive(0, game.getBote(), game.estado);
+            }
+            
+            Actions action = game.action(true, actionBot);
+            
+            changeGUI(Turno.BOT);
+            
+            if(action == Actions.FOLD){
+                game.cambiaEstado(Juego.estadoPartida.INFO);
+                infoGUI(InfoType.FOLD);
+            }else if(action == Actions.CALL){
+                Logger.setText("Bot Calls/checks");
+            }else if(action == Actions.RAISE){
+                Logger.setText("Bot Raises");
+            }
+            
+            refreshGUI();
+            
+            turno = Turno.HUMANO;
+        }else{
+            changeGUI(Turno.HUMANO);
+            //siguienteEstado();
+        }
+ 
     }
 
     private void betButtonListener(){
         
-        Pot_label.setText(Double.toString(game.getApuestaBot() + game.getApuestaPlayer()));
+        double bet = Double.parseDouble(BetText.getText());
         
-        game.raiseJugador(Double.parseDouble(BetText.getText()));
+        Actions action = game.action(false, bet);
         
+        if (action == Actions.RAISE){
+            double accionBot;
+            //Llamar a la estrategia dle boton
+            if(Juego.estado == Juego.estadoPartida.PREFLOP){
+               accionBot = game.getBot().preflopAgressive(bet);
+            }else{
+               accionBot = game.getBot().postFlopAgressive(bet, game.getBote(), Juego.estado);
+            }
+            Actions actionBot = game.action(true, accionBot);
+            
+            changeGUI(Turno.BOT);
+            
+            if(actionBot == Actions.CALL){
+                Logger.setText("Bot Calls");
+            }else if(actionBot == Actions.FOLD){
+                game.cambiaEstado(Juego.estadoPartida.INFO);
+                infoGUI(InfoType.FOLD);
+            }else{
+                Logger.setText("Bot Raises");
+            }  
+        }
         
-        CardLayout card2 = (CardLayout)ActionPanel.getLayout();
-        card2.show(ActionPanel, "card2");
-                
-        turno = Turno.BOT;
+        refreshGUI();
+        
+    }
+    
+    private void callButtonListener(){
+        refreshGUI();
+        
+        double bet = game.getApuestaBot();
+        
+        Actions action = game.action(false, bet);
+        
+        if(action == Actions.CALL){
+            siguienteEstado();
+        }
+        
+        refreshGUI();
+    }
+    
+    private void foldButtonListener(){
+        
+        double bet = -1;
+        
+        Actions action = game.action(false, bet);
+        
+        if(action == Actions.FOLD){
+            game.cambiaEstado(Juego.estadoPartida.INFO);
+            infoGUI(InfoType.FOLD);
+        }
+        
+        refreshGUI();
     }
     
     private void refreshGUI(){
@@ -800,6 +854,43 @@ public class MainFrame extends javax.swing.JFrame {
         }    
     }
     
+    private void changeGUI(Turno turno){
+        switch (turno){
+            case BOT:
+                CardLayout card2 = (CardLayout)ActionPanel.getLayout();
+                card2.show(ActionPanel, "card2");
+                break;
+            case HUMANO:
+                CardLayout card = (CardLayout)ActionPanel.getLayout();
+                card.show(ActionPanel, "card1");
+        }
+    }
+    
+     public void siguienteEstado(){
+        switch (Juego.estado){
+            case INFO:
+                game.cambiaEstado(Juego.estadoPartida.PREFLOP);
+                preflopGUI();
+                break;
+            case PREFLOP:
+                turno = Turno.BOT;
+                game.cambiaEstado(Juego.estadoPartida.FLOP);
+                flopGUI();
+                break;
+            case FLOP:
+                game.cambiaEstado(Juego.estadoPartida.TURN);
+                turnGUI();
+                break;
+            case TURN:
+                game.cambiaEstado(Juego.estadoPartida.RIVER);
+                riverGUI();
+                break;
+            case RIVER:
+                game.cambiaEstado(Juego.estadoPartida.INFO);
+                infoGUI(InfoType.SHOWDOWN);
+                break;
+        }
+    }
     
     
 

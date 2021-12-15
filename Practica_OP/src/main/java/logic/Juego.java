@@ -179,9 +179,11 @@ public class Juego {
 
         if(bot.CiegaPequeña()){
             apuestaBot=0.5;
+            bot.restarFichas(apuestaBot);
 //            if(bot.tieneFichas(apuestaBot))
 //                bot.setFichas(bot.getFichas()-apuestaBot);
             apuestaPlayer=1;
+            jugador.restarFichas(apuestaPlayer);
 //            if(jugador.tieneFichas(apuestaPlayer))
 //                 jugador.setFichas(jugador.getFichas()-apuestaPlayer);
 
@@ -199,55 +201,64 @@ public class Juego {
         estado=estadoPartida.PREFLOP;
 
     }
+    
+   
 
 
-    public void avanzaEstado(){
+    public void cambiaEstado(estadoPartida estado){
 
         switch(estado) {
-
-            case PREFLOP:
-                bote=apuestaBot+apuestaPlayer;
-                board.add(barajaBarajada.get(0));
-                board.add(barajaBarajada.get(1));
-                board.add(barajaBarajada.get(2));
-                board.remove(barajaBarajada.get(0));
-                board.remove(barajaBarajada.get(0));
-                board.remove(barajaBarajada.get(0));
-                bot.evaluaBot(board);
-                estado=estadoPartida.FLOP;
-                break;
-
-            case FLOP:
-                bote=apuestaBot+apuestaPlayer;
-                board.add(barajaBarajada.get(0));
-                board.remove(barajaBarajada.get(0));
-                bot.evaluaBot(board);
-                estado=estadoPartida.TURN;
-                break;
-
-            case TURN:
-                bote=apuestaBot+apuestaPlayer;
-                board.add(barajaBarajada.get(0));
-                board.remove(barajaBarajada.get(0));
-                bot.evaluaBot(board);
-                estado=estadoPartida.RIVER;
-                break;
-
-            case RIVER:
-                checkWinner();
+            case INFO:
+                bote = 0;
+                apuestaBot = 0;
+                apuestaPlayer = 0;
                 board.clear();
                 bot.getCartas().clear();
                 jugador.getCartas().clear();
                 barajaBarajada.clear();
                 barajaBarajada=(ArrayList<Carta>) baraja.clone();
                 Collections.shuffle(barajaBarajada);
-                //llamar sumar bote al stack del ganador
+                this.estado = estado;
+                break; 
+            case PREFLOP:
                 startGame();
                 break;
 
+            case FLOP:
+                bote=apuestaBot+apuestaPlayer;
+                apuestaBot = 0;
+                apuestaPlayer = 0;
+                board.add(barajaBarajada.get(0));
+                board.add(barajaBarajada.get(1));
+                board.add(barajaBarajada.get(2));
+                barajaBarajada.remove(barajaBarajada.get(0));
+                barajaBarajada.remove(barajaBarajada.get(0));
+                barajaBarajada.remove(barajaBarajada.get(0));
+                bot.evaluaBot(board);
+                estado=estadoPartida.FLOP;
+                break;
+
+            case TURN:
+                bote=apuestaBot+apuestaPlayer;
+                apuestaBot = 0;
+                apuestaPlayer = 0;
+                board.add(barajaBarajada.get(0));
+                barajaBarajada.remove(barajaBarajada.get(0));
+                bot.evaluaBot(board);
+                estado=estadoPartida.TURN;
+                break;
+
+            case RIVER:
+                checkWinner();
+                bote=apuestaBot+apuestaPlayer;
+                apuestaBot = 0;
+                apuestaPlayer = 0;
+                board.add(barajaBarajada.get(0));
+                barajaBarajada.remove(barajaBarajada.get(0));
+                bot.evaluaBot(board);
+                estado=estadoPartida.RIVER;
+                break;
         }
-        apuestaPlayer=0;
-        apuestaBot=0;
     }
 
     public boolean checkApuestaJ(double apuesta){
@@ -258,31 +269,48 @@ public class Juego {
         //turno=true -> turno del bot
 
       if(turno){
-          if(bet > apuestaPlayer)
+          if(bet > apuestaPlayer){
+              apuestaBot += bet;
+              bot.restarFichas(bet);
               return Actions.RAISE;
-
-          else if (bet==apuestaPlayer)
+          }
+          else if (bet==apuestaPlayer){
+              apuestaBot += bet;
+              bot.restarFichas(bet);
+              bote += apuestaBot + apuestaPlayer;
               return Actions.CALL;
-
+          }
           else if (bet==0)
               return Actions.CHECK;
 
-          else
+          else{
+              jugador.sumarFichas(bote + apuestaPlayer + apuestaBot);
+              
               return Actions.FOLD;
+          }
+              
 
       }
       else{
-          if(bet > apuestaBot)
+          if(bet > apuestaBot){
+              apuestaPlayer += bet;
+              jugador.restarFichas(bet);
               return Actions.RAISE;
-
-          else if(bet == apuestaBot)
+          }
+          else if(bet == apuestaBot){
+              apuestaPlayer += bet;
+              jugador.restarFichas(bet);
+              bote += apuestaBot + apuestaPlayer;
               return Actions.CALL;
-
+          }
           else if(bet == 0)
               return Actions.CHECK;
 
-          else
+          else{
+              bot.sumarFichas(bote + apuestaPlayer + apuestaBot);
               return Actions.FOLD;
+          }
+              
 
 
       }
@@ -295,7 +323,7 @@ public class Juego {
 
         apuestaPlayer = apuestaBot;
         jugador.restarFichas(apuestaPlayer);
-        avanzaEstado();
+        //avanzaEstado();
     }
 
     public void raiseJugador(double raise){
@@ -308,14 +336,14 @@ public class Juego {
 
         }
         else{
-           botAction = bot.postFlopAggressive(raise,bote,estado);
+           botAction = bot.postFlopAgressive(raise,bote,estado);
         }
 
         if(botAction==apuestaPlayer){
             MainFrame.Logger.setText("Bot calls");
             apuestaBot=botAction;
             bot.restarFichas(botAction);
-            avanzaEstado();
+            //avanzaEstado();
         }
         else if (botAction > apuestaPlayer){
             MainFrame.Logger.setText("Bot raises");
@@ -336,7 +364,7 @@ public class Juego {
         apuestaBot=0;
         apuestaPlayer=0;
         estado=estadoPartida.RIVER;
-        avanzaEstado();
+        //avanzaEstado();
 
     }
 

@@ -207,7 +207,7 @@ public class Bot {
 
 
     public double preflopAgressive(double bet){
-        double porcentaje = rangoPassive.size()*0.8;
+        double porcentaje = rangoPassive.size();
         boolean encontrado = false;
         int i=0;
         
