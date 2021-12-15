@@ -630,7 +630,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void superActionListener(){
         
         switch(Juego.estado){
-            case START:
+            case INFO:
                 game.startGame();
                 
                 Human_Stack.setText(Double.toString(game.getPlayer().getFichas()));
