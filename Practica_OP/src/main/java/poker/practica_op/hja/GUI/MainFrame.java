@@ -14,6 +14,12 @@ import logic.Strat;
  */
 public class MainFrame extends javax.swing.JFrame {
     
+    private enum Turno{ HUMANO, BOT }
+    
+    private enum InfoType { START, SHOWDOWN, FOLD }
+    
+    private Turno turno;
+    
     private Juego game;
     
     private Strat strat;
@@ -25,6 +31,7 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         CardLayout card = (CardLayout)MainPanel.getLayout();
         card.show(MainPanel, "card3");
+        strat = Strat.AGRESSIVE;
     }
 
     /**
@@ -69,6 +76,7 @@ public class MainFrame extends javax.swing.JFrame {
         Bet_button = new javax.swing.JButton();
         Call_button = new javax.swing.JButton();
         Fold_button = new javax.swing.JButton();
+        BetText = new javax.swing.JTextField();
         StartPanel = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         PlayButton = new javax.swing.JButton();
@@ -291,11 +299,24 @@ public class MainFrame extends javax.swing.JFrame {
 
         ActionPanel.add(jPanel7, "card2");
 
+        Bet_slider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                Bet_sliderStateChanged(evt);
+            }
+        });
+
         Bet_button.setText("Bet");
+        Bet_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Bet_buttonActionPerformed(evt);
+            }
+        });
 
         Call_button.setText("Call");
 
         Fold_button.setText("Fold");
+
+        BetText.setText("jTextField1");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -305,6 +326,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(BetText)
                     .addComponent(Bet_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(Call_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(Fold_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -321,7 +343,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(Call_button)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Fold_button)
-                .addContainerGap(100, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(BetText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(76, Short.MAX_VALUE))
         );
 
         ActionPanel.add(jPanel6, "card1");
@@ -524,8 +548,18 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void ActionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActionButtonActionPerformed
         // TODO add your handling code here:
-        superActionListener();
+        OKActionListener();
     }//GEN-LAST:event_ActionButtonActionPerformed
+
+    private void Bet_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bet_buttonActionPerformed
+        // TODO add your handling code here:
+        betButtonListener();
+    }//GEN-LAST:event_Bet_buttonActionPerformed
+
+    private void Bet_sliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_Bet_sliderStateChanged
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_Bet_sliderStateChanged
 
     /**
      * @param args the command line arguments
@@ -567,6 +601,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel ActionPanel;
     private javax.swing.JToggleButton Agressive_button;
     private javax.swing.JToggleButton Balanced_button;
+    private javax.swing.JTextField BetText;
     private javax.swing.JButton Bet_button;
     private javax.swing.JSlider Bet_slider;
     private javax.swing.JPanel BoardPanel;
@@ -612,13 +647,10 @@ public class MainFrame extends javax.swing.JFrame {
         CardLayout card = (CardLayout)MainPanel.getLayout();
         card.show(MainPanel, "card2");
         
-        CardLayout card2 = (CardLayout)ActionPanel.getLayout();
-        card2.show(ActionPanel, "card2");
-        
-        //TODO Crear la instancia de juego
         game = new Juego(strat , true);
         
         if(true){
+            turno = Turno.BOT;
             Bot_blind.setText("SB");
             Player_blind.setText("BB");
         }
@@ -627,11 +659,23 @@ public class MainFrame extends javax.swing.JFrame {
         
     }
     
-    private void superActionListener(){
+    private void OKActionListener(){
         
-        switch(Juego.estado){
-            case START:
-                game.startGame();
+        switch(turno){
+            case BOT:
+                CardLayout card2 = (CardLayout)ActionPanel.getLayout();
+                card2.show(ActionPanel, "card2");
+                
+                if(Juego.estado == Juego.estadoPartida.START){
+                    game.startGame();
+                }
+                
+                Pot_label.setText(Double.toString(game.getApuestaBot() + game.getApuestaPlayer()));
+                
+                if(true){
+                    game.raiseJugador(1);
+                    game.setApuestaPlayer(0);
+                }
                 
                 Human_Stack.setText(Double.toString(game.getPlayer().getFichas()));
                 Bot_stack.setText(Double.toString(game.getBot().getFichas()));
@@ -639,22 +683,123 @@ public class MainFrame extends javax.swing.JFrame {
                 Bot_bet.setText(Double.toString(game.getApuestaBot()));
                 Human_bet.setText(Double.toString(game.getApuestaPlayer()));
                 
+                
                 P_card1.setText(game.getCartasJugador().get(0).toString());
                 P_card2.setText(game.getCartasJugador().get(1).toString());
                 /*
                 Bot_card1.setText("░");
-                Bot_card2.setText("░");*/
+                Bot_card2.setText("░");
+                */
                 Bot_card1.setText(game.getCartasBot().get(0).toString());
                 Bot_card2.setText(game.getCartasBot().get(1).toString());
                 
-                game.raiseJugador(1);
+                turno = Turno.HUMANO;
                 break;
+            case HUMANO:
+                //check estado
                 
-        }
+                card2 = (CardLayout)ActionPanel.getLayout();
+                card2.show(ActionPanel, "card1");
+                
+                Bet_slider.setMaximum((int)game.getBot().getFichas());
+                Bet_slider.setMinimum((int)game.getApuestaBot());
+                
+                turno = Turno.BOT;
+                break;
+        }   
+    }
+
+    private void betButtonListener(){
+        
+        Pot_label.setText(Double.toString(game.getApuestaBot() + game.getApuestaPlayer()));
+        
+        game.raiseJugador(Double.parseDouble(BetText.getText()));
         
         
+        CardLayout card2 = (CardLayout)ActionPanel.getLayout();
+        card2.show(ActionPanel, "card2");
+                
+        turno = Turno.BOT;
+    }
+    
+    private void refreshGUI(){
         
-    }    
+        Bot_bet.setText(Double.toString(game.getApuestaBot()));
+        Human_bet.setText(Double.toString(game.getApuestaPlayer()));
+        
+        Human_Stack.setText(Double.toString(game.getPlayer().getFichas()));
+        Bot_stack.setText(Double.toString(game.getBot().getFichas()));
+        
+    }
+    
+    private void preflopGUI(){
+        
+        Pot_label.setText(Double.toString(0));
+        
+        P_card1.setText(game.getCartasJugador().get(0).toString());
+        P_card2.setText(game.getCartasJugador().get(1).toString());
+        /*
+        Bot_card1.setText("░");
+        Bot_card2.setText("░");
+        */
+        Bot_card1.setText(game.getCartasBot().get(0).toString());
+        Bot_card2.setText(game.getCartasBot().get(1).toString());
+        
+        refreshGUI();
+    }
+    
+    private void flopGUI(){
+        
+        Pot_label.setText(Double.toString( game.getBote() +
+                game.getApuestaBot() + game.getApuestaPlayer()));
+        
+        Flop1.setText(game.getBoard().get(0).toString());
+        Flop2.setText(game.getBoard().get(1).toString());
+        Flop3.setText(game.getBoard().get(2).toString());
+        
+        refreshGUI();
+    }
+    
+    private void turnGUI(){
+        
+        Pot_label.setText(Double.toString( game.getBote() +
+                game.getApuestaBot() + game.getApuestaPlayer()));
+        
+        Turn.setText(game.getBoard().get(3).toString());
+        
+        refreshGUI();
+    }
+    
+    private void riverGUI(){
+        
+        Pot_label.setText(Double.toString( game.getBote() +
+                game.getApuestaBot() + game.getApuestaPlayer()));
+        
+        River.setText(game.getBoard().get(4).toString());
+        
+        refreshGUI();
+    }
+    
+    private void infoGUI(InfoType info){
+        
+        Pot_label.setText("");
+        
+        Bot_bet.setText("");
+        Human_bet.setText("");
+        
+        Human_Stack.setText(Double.toString(game.getPlayer().getFichas()));
+        Bot_stack.setText(Double.toString(game.getBot().getFichas()));
+        
+        switch (info){
+            case START:
+                Logger.setText("Ready To play!");
+            case SHOWDOWN:
+                Logger.setText("Someone Wins!");
+            case FOLD:
+                Logger.setText("Someone folded");
+        }    
+    }
+    
     
     
 

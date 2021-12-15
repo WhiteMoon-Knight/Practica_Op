@@ -523,9 +523,10 @@
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="Bet_slider" alignment="1" pref="448" max="32767" attributes="0"/>
-                          <Group type="102" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="BetText" max="32767" attributes="0"/>
                                   <Component id="Bet_button" max="32767" attributes="0"/>
                                   <Component id="Call_button" alignment="0" max="32767" attributes="0"/>
                                   <Component id="Fold_button" alignment="0" max="32767" attributes="0"/>
@@ -545,18 +546,26 @@
                               <Component id="Call_button" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="Fold_button" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="100" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="BetText" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="76" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
                     <Component class="javax.swing.JSlider" name="Bet_slider">
+                      <Events>
+                        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="Bet_sliderStateChanged"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JButton" name="Bet_button">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Bet"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Bet_buttonActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JButton" name="Call_button">
                       <Properties>
@@ -566,6 +575,11 @@
                     <Component class="javax.swing.JButton" name="Fold_button">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Fold"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="BetText">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="jTextField1"/>
                       </Properties>
                     </Component>
                   </SubComponents>

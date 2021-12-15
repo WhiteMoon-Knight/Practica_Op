@@ -191,13 +191,13 @@ public class Bot {
         }
         // return arraysDeRangos.contains(RangoCreado)
 
-        if(level==Strat.AGRESSIVE){
+        if(level == Strat.AGRESSIVE){
             result= rangoPassive.contains(aux);
         }
-        else if(level==Strat.INTERMIDE){
+        else if(level.equals(Strat.INTERMIDE)){
             result= rangoMedio.contains(aux);
         }
-        else if(level==Strat.PASSIVE)
+        else if(level.equals(Strat.PASSIVE))
             result= rangoCerrado.contains(aux);
 
         this.rango=aux;

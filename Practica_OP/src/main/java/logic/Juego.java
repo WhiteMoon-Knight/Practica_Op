@@ -168,10 +168,12 @@ public class Juego {
 
         jugador.dealNLHECards(barajaBarajada.get(0),barajaBarajada.get(1));
         cartasJugador.add(barajaBarajada.get(0));cartasJugador.add(barajaBarajada.get(1));
-        barajaBarajada.remove(0); barajaBarajada.remove(1);
+        barajaBarajada.remove(0); 
+        barajaBarajada.remove(0);
         bot.dealNLHECards(barajaBarajada.get(0),barajaBarajada.get(1));
         cartasBot.add(barajaBarajada.get(0));cartasBot.add(barajaBarajada.get(1));
-        barajaBarajada.remove(0); barajaBarajada.remove(1);
+        barajaBarajada.remove(0); 
+        barajaBarajada.remove(0);
 
         if(bot.CiegaPequeña()){
             apuestaBot=0.5;
@@ -207,8 +209,8 @@ public class Juego {
                 board.add(barajaBarajada.get(1));
                 board.add(barajaBarajada.get(2));
                 board.remove(barajaBarajada.get(0));
-                board.remove(barajaBarajada.get(1));
-                board.remove(barajaBarajada.get(2));
+                board.remove(barajaBarajada.get(0));
+                board.remove(barajaBarajada.get(0));
                 bot.evaluaBot(board);
                 estado=estadoPartida.FLOP;
                 break;
@@ -273,11 +275,13 @@ public class Juego {
         if(botAction==apuestaPlayer){
             MainFrame.Logger.setText("Bot calls");
             apuestaBot=botAction;
+            bot.restarFichas(botAction);
             avanzaEstado();
         }
         else if (botAction > apuestaPlayer){
             MainFrame.Logger.setText("Bot raises");
             apuestaBot=botAction;
+            bot.restarFichas(botAction);
         }
 
         else{
