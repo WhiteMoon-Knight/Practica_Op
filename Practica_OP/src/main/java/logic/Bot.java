@@ -223,8 +223,8 @@ public class Bot {
             if(ciegaPequeña){
 
                 if(encontrado) {
-                    if(this.fichas>2.5)
-                        return 2.5;
+                    if(this.fichas>bet +2.5)
+                        return bet + 2.5;
                     else
                         return this.fichas;
                 }

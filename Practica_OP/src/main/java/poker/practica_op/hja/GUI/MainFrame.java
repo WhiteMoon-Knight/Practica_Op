@@ -738,6 +738,7 @@ public class MainFrame extends javax.swing.JFrame {
             
             if(actionBot == Actions.CALL){
                 Logger.setText("Bot Calls");
+                siguienteEstado();
             }else if(actionBot == Actions.FOLD){
                 game.cambiaEstado(Juego.estadoPartida.INFO);
                 infoGUI(InfoType.FOLD);
