@@ -16,6 +16,8 @@ public class Juego {
     private Bot bot;
 
     private ArrayList<Carta> board;
+    
+    public boolean showdown;
 
     private ArrayList<Carta> baraja= new ArrayList<Carta>(Arrays.asList(
             new Carta("A","h"),
@@ -158,6 +160,7 @@ public class Juego {
         Collections.shuffle(barajaBarajada);
         this.bote=0;
         estado=estadoPartida.INFO;
+        showdown = false;
 
         //ciegaPequeña true para el bot -> False para el player
         bot=new Bot(100,level,ciuegaPequeña);
@@ -209,6 +212,9 @@ public class Juego {
 
         switch(estado) {
             case INFO:
+                if(showdown){
+                    checkWinner();
+                }
                 bote = 0;
                 apuestaBot = 0;
                 apuestaPlayer = 0;
@@ -225,7 +231,7 @@ public class Juego {
                 break;
 
             case FLOP:
-                bote=apuestaBot+apuestaPlayer;
+                //bote+=apuestaBot+apuestaPlayer;
                 apuestaBot = 0;
                 apuestaPlayer = 0;
                 board.add(barajaBarajada.get(0));
@@ -239,7 +245,7 @@ public class Juego {
                 break;
 
             case TURN:
-                bote=apuestaBot+apuestaPlayer;
+                //bote+=apuestaBot+apuestaPlayer;
                 apuestaBot = 0;
                 apuestaPlayer = 0;
                 board.add(barajaBarajada.get(0));
@@ -250,13 +256,13 @@ public class Juego {
 
             case RIVER:
 
-                bote=apuestaBot+apuestaPlayer;
+                //bote+=apuestaBot+apuestaPlayer;
                 apuestaBot = 0;
                 apuestaPlayer = 0;
                 board.add(barajaBarajada.get(0));
                 barajaBarajada.remove(barajaBarajada.get(0));
 
-                checkWinner();
+                bot.evaluaBot(board);
                 this.estado=estadoPartida.RIVER;
                 break;
         }
@@ -271,11 +277,11 @@ public class Juego {
 
       if(turno){
           if(bet > apuestaPlayer){
-              apuestaBot += bet;
+              apuestaBot += bet; 
               bot.restarFichas(bet);
               return Actions.RAISE;
           }
-          else if (bet==apuestaPlayer){
+          else if (bet<=apuestaPlayer && bet > 0){
               apuestaBot += bet;
               bot.restarFichas(bet);
               bote += apuestaBot + apuestaPlayer;
@@ -284,7 +290,7 @@ public class Juego {
           else if (bet==0)
               return Actions.CHECK;
 
-          else{
+          else if(bet < 0){
               jugador.sumarFichas(bote + apuestaPlayer + apuestaBot);
               
               return Actions.FOLD;
@@ -298,7 +304,7 @@ public class Juego {
               jugador.restarFichas(bet);
               return Actions.RAISE;
           }
-          else if(bet == apuestaBot){
+          else if(bet <= apuestaBot && bet > 0){
               apuestaPlayer += bet;
               jugador.restarFichas(bet);
               bote += apuestaBot + apuestaPlayer;
@@ -307,7 +313,7 @@ public class Juego {
           else if(bet == 0)
               return Actions.CHECK;
 
-          else{
+          else if(bet < 0){
               bot.sumarFichas(bote + apuestaPlayer + apuestaBot);
               return Actions.FOLD;
           }
@@ -315,59 +321,9 @@ public class Juego {
 
 
       }
-
-
+      return null;
     }
 
-
-    public void callJugador(){
-
-        apuestaPlayer = apuestaBot;
-        jugador.restarFichas(apuestaPlayer);
-        //avanzaEstado();
-    }
-
-    public void raiseJugador(double raise){
-        double botAction;
-        apuestaPlayer=raise;
-
-        jugador.restarFichas(apuestaPlayer);
-        if(estado==estadoPartida.PREFLOP){
-           botAction= bot.preflopAgressive(apuestaPlayer);
-
-        }
-        else{
-           botAction = bot.postFlopAgressive(raise,bote,estado);
-        }
-
-        if(botAction==apuestaPlayer){
-            MainFrame.Logger.setText("Bot calls");
-            apuestaBot=botAction;
-            bot.restarFichas(botAction);
-            //avanzaEstado();
-        }
-        else if (botAction > apuestaPlayer){
-            MainFrame.Logger.setText("Bot raises");
-            apuestaBot=botAction;
-            bot.restarFichas(botAction);
-        }
-
-        else{
-            ///llamar metodo checkWinner (el bot foldea)
-            checkWinner();
-        }
-
-    }
-
-    public void foldJugador(){
-        bot.sumarFichas(bote+apuestaBot+apuestaPlayer);
-        bote=0;
-        apuestaBot=0;
-        apuestaPlayer=0;
-        estado=estadoPartida.RIVER;
-        //avanzaEstado();
-
-    }
 
     void checkWinner(){
         Mano aux;
@@ -377,10 +333,10 @@ public class Juego {
        aux= jugador.getBestHand().compareMano(bot.getBestHand());
 
        if(aux==jugador.getBestHand()){
-           jugador.sumarFichas(apuestaPlayer+bote+apuestaBot);
+           jugador.sumarFichas(bote);
        }
        else{
-           bot.sumarFichas(apuestaPlayer+bote+apuestaBot);
+           bot.sumarFichas(bote);
        }
 
    }

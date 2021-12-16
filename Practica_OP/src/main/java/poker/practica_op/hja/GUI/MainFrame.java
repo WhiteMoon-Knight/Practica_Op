@@ -71,7 +71,6 @@ public class MainFrame extends javax.swing.JFrame {
         Human_Stack = new javax.swing.JLabel();
         ActionPanel = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
-        Logger = new javax.swing.JLabel();
         ActionButton = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         Bet_slider = new javax.swing.JSlider();
@@ -79,6 +78,7 @@ public class MainFrame extends javax.swing.JFrame {
         Call_button = new javax.swing.JButton();
         Fold_button = new javax.swing.JButton();
         BetText = new javax.swing.JTextField();
+        Logger = new javax.swing.JLabel();
         StartPanel = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         PlayButton = new javax.swing.JButton();
@@ -268,9 +268,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         ActionPanel.setLayout(new java.awt.CardLayout());
 
-        Logger.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Logger.setText("Computer Action");
-
         ActionButton.setText("OK");
         ActionButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -284,17 +281,13 @@ public class MainFrame extends javax.swing.JFrame {
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Logger, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
-                    .addComponent(ActionButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(ActionButton, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Logger, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(178, 178, 178)
                 .addComponent(ActionButton)
                 .addContainerGap(16, Short.MAX_VALUE))
         );
@@ -362,6 +355,9 @@ public class MainFrame extends javax.swing.JFrame {
 
         ActionPanel.add(jPanel6, "card1");
 
+        Logger.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Logger.setText("Computer Action");
+
         javax.swing.GroupLayout GamePanelLayout = new javax.swing.GroupLayout(GamePanel);
         GamePanel.setLayout(GamePanelLayout);
         GamePanelLayout.setHorizontalGroup(
@@ -371,9 +367,13 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(GamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(GamePanelLayout.createSequentialGroup()
                         .addComponent(Human_bet, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Pot_label, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
+                        .addGroup(GamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(GamePanelLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(Pot_label, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(Logger, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Bot_bet, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(GamePanelLayout.createSequentialGroup()
                         .addGroup(GamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -394,18 +394,20 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, GamePanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(GamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(GamePanelLayout.createSequentialGroup()
-                        .addGroup(GamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(Bot_bet, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Human_bet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Player_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(GamePanelLayout.createSequentialGroup()
-                        .addComponent(Pot_label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addGroup(GamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(BoardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(BotPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(Human_bet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(GamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(GamePanelLayout.createSequentialGroup()
+                            .addComponent(Pot_label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(Logger, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(GamePanelLayout.createSequentialGroup()
+                            .addGap(0, 0, Short.MAX_VALUE)
+                            .addComponent(Bot_bet, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(GamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Player_panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BoardPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BotPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(GamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Bot_stack, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -669,58 +671,33 @@ public class MainFrame extends javax.swing.JFrame {
         CardLayout card = (CardLayout)MainPanel.getLayout();
         card.show(MainPanel, "card2");
         
+        changeGUI(Turno.HUMANO);
         game = new Juego(strat , true);
         
         if(true){
             turno = Turno.BOT;
             Bot_blind.setText("SB");
             Player_blind.setText("BB");
+            siguienteEstado();
+            botfirst();
         }
         
-        Logger.setText("Ready to play!");
+        //Logger.setText("Ready to play!");
         
     }
     
     private void OKActionListener(){
 
-        if(game.estado==Juego.estadoPartida.INFO)
-            siguienteEstado();
-
-        if(turno == Turno.BOT){
-            
-            double actionBot;
-            if(game.estado == Juego.estadoPartida.PREFLOP){
-                actionBot = game.getBot().preflopAgressive(0);
-            }else{
-                actionBot = game.getBot().postFlopAgressive(0, game.getBote(), game.estado);
-            }
-            
-            Actions action = game.action(true, actionBot);
-            
-            changeGUI(Turno.BOT);
-            
-            if(action == Actions.FOLD){
-                game.cambiaEstado(Juego.estadoPartida.INFO);
-                infoGUI(InfoType.FOLD);
-            }else if(action == Actions.CALL){
-                Logger.setText("Bot Calls/checks");
-            }else if(action == Actions.RAISE){
-                Logger.setText("Bot Raises");
-            }
-            
-            refreshGUI();
-            
-            turno = Turno.HUMANO;
-        }else{
-            changeGUI(Turno.HUMANO);
-            //siguienteEstado();
-        }
  
     }
 
     private void betButtonListener(){
         
         double bet = Double.parseDouble(BetText.getText());
+        
+        if (bet > game.getPlayer().getFichas()){
+            bet = game.getPlayer().getFichas();
+        }
         
         Actions action = game.action(false, bet);
         
@@ -734,12 +711,13 @@ public class MainFrame extends javax.swing.JFrame {
             }
             Actions actionBot = game.action(true, accionBot);
             
-            changeGUI(Turno.BOT);
+            //changeGUI(Turno.BOT);
             
             if(actionBot == Actions.CALL){
                 Logger.setText("Bot Calls");
                 siguienteEstado();
             }else if(actionBot == Actions.FOLD){
+                game.showdown =false;
                 game.cambiaEstado(Juego.estadoPartida.INFO);
                 infoGUI(InfoType.FOLD);
             }else{
@@ -755,11 +733,16 @@ public class MainFrame extends javax.swing.JFrame {
         refreshGUI();
         
         double bet = game.getApuestaBot();
+        if (bet > game.getPlayer().getFichas()){
+            bet = game.getPlayer().getFichas();
+        }
         
         Actions action = game.action(false, bet);
         
-        if(action == Actions.CALL){
+        if(action == Actions.CALL && bet != 0){
             siguienteEstado();
+        }else{
+            botfirst();
         }
         
         refreshGUI();
@@ -772,6 +755,7 @@ public class MainFrame extends javax.swing.JFrame {
         Actions action = game.action(false, bet);
         
         if(action == Actions.FOLD){
+            game.showdown = false;
             game.cambiaEstado(Juego.estadoPartida.INFO);
             infoGUI(InfoType.FOLD);
         }
@@ -843,6 +827,15 @@ public class MainFrame extends javax.swing.JFrame {
         
         Bot_bet.setText("");
         Human_bet.setText("");
+        P_card1.setText("");
+        P_card2.setText("");
+        Bot_card1.setText("");
+        Bot_card2.setText("");
+        Flop1.setText("");
+        Flop2.setText("");
+        Flop3.setText("");
+        Turn.setText("");
+        River.setText("");
         
         Human_Stack.setText(Double.toString(game.getPlayer().getFichas()));
         Bot_stack.setText(Double.toString(game.getBot().getFichas()));
@@ -850,10 +843,13 @@ public class MainFrame extends javax.swing.JFrame {
         switch (info){
             case START:
                 Logger.setText("Ready To play!");
+                break;
             case SHOWDOWN:
                 Logger.setText("Someone Wins!");
+                break;
             case FOLD:
                 Logger.setText("Someone folded");
+                break;
         }    
     }
     
@@ -889,13 +885,38 @@ public class MainFrame extends javax.swing.JFrame {
                 riverGUI();
                 break;
             case RIVER:
+                game.showdown = true;
                 game.cambiaEstado(Juego.estadoPartida.INFO);
+                
                 infoGUI(InfoType.SHOWDOWN);
                 break;
         }
     }
     
-    
+    private void botfirst(){
+        double actionBot;
+            if(game.estado == Juego.estadoPartida.PREFLOP){
+                actionBot = game.getBot().preflopAgressive(0);
+            }else{
+                actionBot = game.getBot().postFlopAgressive(0, game.getBote(), game.estado);
+            }
+            
+            Actions action = game.action(true, actionBot);
+            
+            if(action == Actions.FOLD){
+                game.showdown = false;
+                game.cambiaEstado(Juego.estadoPartida.INFO);
+                infoGUI(InfoType.FOLD);
+            }else if(action == Actions.CALL){
+                Logger.setText("Bot Calls/checks");
+                siguienteEstado();
+            }else if(action == Actions.RAISE){
+                Logger.setText("Bot Raises");
+            }
+            
+            refreshGUI();
+            
+    }
 
 }
 
