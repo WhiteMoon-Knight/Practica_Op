@@ -218,7 +218,7 @@ public class Juego {
                 barajaBarajada.clear();
                 barajaBarajada=(ArrayList<Carta>) baraja.clone();
                 Collections.shuffle(barajaBarajada);
-                this.estado = estado;
+               this.estado = estado;
                 break; 
             case PREFLOP:
                 startGame();
@@ -235,7 +235,7 @@ public class Juego {
                 barajaBarajada.remove(barajaBarajada.get(0));
                 barajaBarajada.remove(barajaBarajada.get(0));
                 bot.evaluaBot(board);
-                estado=estadoPartida.FLOP;
+                this.estado=estadoPartida.FLOP;
                 break;
 
             case TURN:
@@ -245,18 +245,19 @@ public class Juego {
                 board.add(barajaBarajada.get(0));
                 barajaBarajada.remove(barajaBarajada.get(0));
                 bot.evaluaBot(board);
-                estado=estadoPartida.TURN;
+                this.estado=estadoPartida.TURN;
                 break;
 
             case RIVER:
-                checkWinner();
+
                 bote=apuestaBot+apuestaPlayer;
                 apuestaBot = 0;
                 apuestaPlayer = 0;
                 board.add(barajaBarajada.get(0));
                 barajaBarajada.remove(barajaBarajada.get(0));
-                bot.evaluaBot(board);
-                estado=estadoPartida.RIVER;
+
+                checkWinner();
+                this.estado=estadoPartida.RIVER;
                 break;
         }
     }

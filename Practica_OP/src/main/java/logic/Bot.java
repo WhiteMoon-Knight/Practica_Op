@@ -313,7 +313,12 @@ public class Bot {
     }
 
     public void evaluaBot(ArrayList<Carta> board){
-        combinaciones(cards,board,0, board.size()-1,0,manos);
+        ArrayList<Carta> manoact = new ArrayList<>(Arrays.asList(cards.get(0),cards.get(1),board.get(0),board.get(1),board.get(2)));
+        ArrayList<Carta> cartasTotales;
+        cartasTotales=(ArrayList<Carta>)cards.clone();
+        cartasTotales.addAll(board);
+        manos.clear();
+        combinaciones(cartasTotales,manoact,0, cartasTotales.size()-1,0,manos);
         this.bestHand=evaluaCombinaciones(manos);
     }
 

@@ -682,8 +682,10 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     private void OKActionListener(){
-        
-        siguienteEstado();
+
+        if(game.estado==Juego.estadoPartida.INFO)
+            siguienteEstado();
+
         if(turno == Turno.BOT){
             
             double actionBot;
